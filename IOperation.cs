@@ -7,6 +7,6 @@ namespace WinFormsCalculator
     public interface IOperation
     {
         double Calculate(double a, double b);
-        string Operation { get; }
+        OperationType OperationType { get; }
     }
 }

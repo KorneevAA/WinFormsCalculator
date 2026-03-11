@@ -1,62 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 
 namespace WinFormsCalculator
 {
     public sealed class AdditionOperation : IOperation
     {
-        public string Operation { get; } = "+";
-        public double Calculate(double a, double b)
-        {
-            return a + b; 
-        }
+        public double Calculate(double a, double b) => a + b;
+        public OperationType OperationType => OperationType.Addition;
     }
-    public sealed class SubstractionOperation : IOperation
+
+    public sealed class SubtractionOperation : IOperation
     {
-        public string Operation { get; } = "-";
-        public double Calculate(double a, double b)
-        {
-            return a - b;
-        }
+        public double Calculate(double a, double b) => a - b;
+        public OperationType OperationType => OperationType.Subtraction;
     }
+
     public sealed class MultiplicationOperation : IOperation
     {
-        public string Operation { get; } = "*";
-        public double Calculate(double a, double b)
-        {
-            return a * b;
-        }
+        public double Calculate(double a, double b) => a * b;
+        public OperationType OperationType => OperationType.Multiplication;
     }
+
     public sealed class DivisionOperation : IOperation
     {
-        public string Operation { get; } = "/";
         public double Calculate(double a, double b)
         {
             if (b == 0)
-                return 0;
+                throw new DivideByZeroException("Деление на ноль");
+
             return a / b;
         }
+        public OperationType OperationType => OperationType.Division;
     }
-    public class Operations
+
+    public class OperationFactory
     {
-        private readonly Dictionary<string, IOperation> _operations;
-        public Operations()
+        public IOperation GetOperation(OperationType operationType)
         {
-            _operations = new Dictionary<string, IOperation>
+            return operationType switch
             {
-                { "+", new AdditionOperation() },
-                { "-", new SubstractionOperation() },
-                { "*", new MultiplicationOperation() },
-                { "/", new DivisionOperation() }
+                OperationType.Addition => new AdditionOperation(),
+                OperationType.Subtraction => new SubtractionOperation(),
+                OperationType.Multiplication => new MultiplicationOperation(),
+                OperationType.Division => new DivisionOperation(),
+                _ => throw new ArgumentException($"Неизвестная операция: {operationType}")
             };
-        }
-        public IOperation GetOperation(string operation)
-        {
-            if (operation.Contains(operation))
-                return _operations[operation];
-            throw new ArgumentException("Operation not found");
         }
     }
 }

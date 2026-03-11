@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace WinFormsCalculator
 {
@@ -8,29 +6,31 @@ namespace WinFormsCalculator
     {
         public string ProcessNumberInput(string currentInput, string newDigit)
         {
-            if (currentInput == "" || currentInput == "0")
+            if (string.IsNullOrEmpty(currentInput) || currentInput == "0")
                 return newDigit;
-            else
-                return currentInput + newDigit;
+
+            return currentInput + newDigit;
         }
+
         public string ProcessDecimalPoint(string currentInput)
         {
-            if (currentInput == "Ошибка")
+            if (currentInput == "Ошибка" || currentInput.Contains(","))
                 return currentInput;
-            else if (!currentInput.Contains(","))
-                return currentInput + ",";
-            else
-                return currentInput;
+
+            return currentInput + ",";
         }
+
         public string ProcessChangeSign(string currentInput)
         {
             if (currentInput == "0" || currentInput == "Ошибка")
                 return currentInput;
-            else if (currentInput.StartsWith("-"))
+
+            if (currentInput.StartsWith("-"))
                 return currentInput.Substring(1);
-            else
-                return "-" + currentInput;
+
+            return "-" + currentInput;
         }
+
         public string ProcessBackspace(string currentInput)
         {
             if (currentInput == "Ошибка" || currentInput.Length <= 1)

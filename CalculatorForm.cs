@@ -1,220 +1,253 @@
 using System;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
+using WinFormsCalculator;
 
 namespace Calculator
 {
     public partial class CalculatorForm : Form
     {
-        private string currentOperation;
-        private StringBuilder currentNumber;
-        private double memory = 0;
+        private readonly CalculatorModel _model = new CalculatorModel();
+        private readonly CalculatorController _controller = new CalculatorController();
+        private readonly IInputProcessor _inputProcessor = new InputProcessor();
+        private readonly IMemoryService _memoryService = new MemoryService();
+        private readonly DisplayFormatter _formatter = new DisplayFormatter();
+        private bool _isNewInput = true;
 
         public CalculatorForm()
         {
             InitializeComponent();
-            currentOperation = "";
-            currentNumber = new StringBuilder("0");
-            lblCurrentNumber.Text = currentNumber.ToString();
-            lblMemoryNumber.Text = memory.ToString();
+            UpdateDisplay();
         }
 
-        private void SetCurrentNumber(string number)
+        private void UpdateDisplay()
         {
-            currentNumber.Clear();
-            currentNumber.Append(number);
-            lblCurrentNumber.Text = currentNumber.ToString();
+            lblMemoryNumber.Text = _formatter.FormatNumber(_memoryService.Memory);
         }
 
-        private string MakeOperation(string a, string b, string operation)
+        private void ClearCalculator()
         {
-            switch (operation)
+            _model.Reset();
+            _memoryService.MemoryClear();
+            lblCurrentNumber.Text = "0";
+            lblLastNumber.Text = "";
+            _isNewInput = true;
+            UpdateDisplay();
+        }
+
+        private void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            ClearCalculator();
+        }
+
+        // Цифры
+        private void btnZero_Click(object sender, EventArgs e) => ProcessNumber("0");
+        private void btnOne_Click(object sender, EventArgs e) => ProcessNumber("1");
+        private void btnTwo_Click(object sender, EventArgs e) => ProcessNumber("2");
+        private void btnThree_Click(object sender, EventArgs e) => ProcessNumber("3");
+        private void btnFour_Click(object sender, EventArgs e) => ProcessNumber("4");
+        private void btnFive_Click(object sender, EventArgs e) => ProcessNumber("5");
+        private void btnSix_Click(object sender, EventArgs e) => ProcessNumber("6");
+        private void btnSeven_Click(object sender, EventArgs e) => ProcessNumber("7");
+        private void btnEight_Click(object sender, EventArgs e) => ProcessNumber("8");
+        private void btnNine_Click(object sender, EventArgs e) => ProcessNumber("9");
+
+        private void ProcessNumber(string digit)
+        {
+            try
             {
-                case "*":
-                    return Convert.ToString(Convert.ToDouble(a) * Convert.ToDouble(b));
-                case "+":
-                    return Convert.ToString(Convert.ToDouble(a) + Convert.ToDouble(b));
-                case "-":
-                    return Convert.ToString(Convert.ToDouble(a) - Convert.ToDouble(b));
-                case "/":
-                    if (b == "0")
-                        return "Ошибка";
-                    return Convert.ToString(Convert.ToDouble(a) / Convert.ToDouble(b));
-                default:
-                    return "Ошибка";
+                if (_isNewInput)
+                {
+                    lblCurrentNumber.Text = digit;
+                    _isNewInput = false;
+                }
+                else
+                {
+                    lblCurrentNumber.Text = _inputProcessor.ProcessNumberInput(lblCurrentNumber.Text, digit);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
             }
         }
 
-        private void SetOperation(string operation)
-        {
-            string tempText = currentNumber.ToString();
+        // Операции
+        private void btnAddition_Click(object sender, EventArgs e) => ProcessOperation("+", OperationType.Addition);
+        private void btnSubstraction_Click(object sender, EventArgs e) => ProcessOperation("-", OperationType.Subtraction);
+        private void btnMultiplication_Click(object sender, EventArgs e) => ProcessOperation("*", OperationType.Multiplication);
+        private void btnDivision_Click(object sender, EventArgs e) => ProcessOperation("/", OperationType.Division);
 
-            if (currentOperation == "")
+        private void ProcessOperation(string symbol, OperationType operationType)
+        {
+            try
             {
-                lblLastNumber.Text = tempText;
-                currentOperation = operation;
-                SetCurrentNumber("0");
+                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
+
+                if (_model.CurrentOperation != OperationType.None)
+                {
+                    double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
+                    _model.LastValue = result;
+                    lblCurrentNumber.Text = _formatter.FormatNumber(result);
+                }
+                else
+                {
+                    _model.LastValue = _model.CurrentValue;
+                }
+
+                _model.CurrentOperation = operationType;
+                lblLastNumber.Text = $"{_formatter.FormatNumber(_model.LastValue)} {symbol}";
+                _isNewInput = true;
             }
-            else
+            catch (Exception ex)
             {
-                lblLastNumber.Text = MakeOperation(lblLastNumber.Text, tempText, currentOperation);
-                SetCurrentNumber("0");
-                currentOperation = operation;
+                ShowError(ex.Message);
             }
         }
 
-        private void AddNumber(string number)
+        // Равно
+        private void btnAnswer_Click(object sender, EventArgs e)
         {
-            if (currentNumber.Length == 1 && currentNumber[0] == '0')
+            try
             {
-                currentNumber.Clear();
-                currentNumber.Append(number);
+                if (_model.CurrentOperation == OperationType.None)
+                    return;
+
+                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
+                double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
+                
+                lblCurrentNumber.Text = _formatter.FormatNumber(result);
+                lblLastNumber.Text = "";
+                _model.CurrentOperation = OperationType.None;
+                _model.CurrentValue = result;
+                _isNewInput = true;
             }
-            else if (currentNumber.ToString() == "Ошибка")
+            catch (Exception ex)
             {
-                currentNumber.Clear();
-                currentNumber.Append(number);
+                ShowError(ex.Message);
             }
-            else
+        }
+
+        // Специальные функции
+        private void btnPercent_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.Percent);
+        private void btnSqrt_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.SquareRoot);
+        private void btnSquare_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.Square);
+        private void btnReverseX_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.Reciprocal);
+
+        private void ProcessUnaryOperation(OperationType operationType)
+        {
+            try
             {
-                currentNumber.Append(number);
+                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
+                double result = _controller.CalculateUnary(_model.CurrentValue, operationType);
+                
+                lblCurrentNumber.Text = _formatter.FormatNumber(result);
+                _model.CurrentValue = result;
+                _isNewInput = true;
             }
-            lblCurrentNumber.Text = currentNumber.ToString();
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+        }
+
+        // Очистка
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearCalculator();
         }
 
         private void btnClearEntry_Click(object sender, EventArgs e)
         {
-            SetCurrentNumber("0");
+            lblCurrentNumber.Text = "0";
+            _model.CurrentValue = 0;
+            _isNewInput = true;
         }
 
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            SetCurrentNumber("0");
-            lblLastNumber.Text = "";
-            currentOperation = "";
-        }
-
+        // Backspace
         private void btnBackspace_Click(object sender, EventArgs e)
         {
-            if (currentNumber.Length > 1 && !(currentNumber.Length == 2 && currentNumber[0] == '-'))
+            try
             {
-                currentNumber.Remove(currentNumber.Length - 1, 1);
+                if (_isNewInput)
+                {
+                    lblCurrentNumber.Text = "0";
+                }
+                else
+                {
+                    lblCurrentNumber.Text = _inputProcessor.ProcessBackspace(lblCurrentNumber.Text);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                currentNumber.Clear();
-                currentNumber.Append("0");
+                ShowError(ex.Message);
             }
-            lblCurrentNumber.Text = currentNumber.ToString();
         }
 
-        private void btnMultiplication_Click(object sender, EventArgs e)
-        {
-            SetOperation("*");
-        }
-
-        private void btnSeven_Click(object sender, EventArgs e) => AddNumber("7");
-        private void btnEight_Click(object sender, EventArgs e) => AddNumber("8");
-        private void btnNine_Click(object sender, EventArgs e) => AddNumber("9");
-        private void btnDivision_Click(object sender, EventArgs e) => SetOperation("/");
-        private void btnFour_Click(object sender, EventArgs e) => AddNumber("4");
-        private void btnFive_Click(object sender, EventArgs e) => AddNumber("5");
-        private void btnSix_Click(object sender, EventArgs e) => AddNumber("6");
-        private void btnAddition_Click(object sender, EventArgs e) => SetOperation("+");
-        private void btnOne_Click(object sender, EventArgs e) => AddNumber("1");
-        private void btnTwo_Click(object sender, EventArgs e) => AddNumber("2");
-        private void btnThree_Click(object sender, EventArgs e) => AddNumber("3");
-        private void btnSubstraction_Click(object sender, EventArgs e) => SetOperation("-");
-        private void btnZero_Click(object sender, EventArgs e) => AddNumber("0");
+        // Смена знака
         private void btnChangeSign_Click(object sender, EventArgs e)
         {
-            string text = currentNumber.ToString();
-            if (text != "0" && text != "Ошибка" && text != "")
+            try
             {
-                if (currentNumber[0] == '-')
-                    currentNumber.Remove(0, 1);
-                else
-                    currentNumber.Insert(0, "-");
-
-                lblCurrentNumber.Text = currentNumber.ToString();
+                lblCurrentNumber.Text = _inputProcessor.ProcessChangeSign(lblCurrentNumber.Text);
+                _isNewInput = false;
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
             }
         }
 
+        // Десятичная точка
         private void btnDot_Click(object sender, EventArgs e)
         {
-            string tempText = currentNumber.ToString();
-
-            if (!tempText.Contains(",") && tempText != "Ошибка")
+            try
             {
-                currentNumber.Append(",");
-                lblCurrentNumber.Text = currentNumber.ToString();
+                if (_isNewInput)
+                {
+                    lblCurrentNumber.Text = "0,";
+                    _isNewInput = false;
+                }
+                else
+                {
+                    lblCurrentNumber.Text = _inputProcessor.ProcessDecimalPoint(lblCurrentNumber.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
             }
         }
 
-        private void btnAnswer_Click(object sender, EventArgs e)
-        {
-            if (currentOperation != "")
-            {
-                string result = MakeOperation(lblLastNumber.Text, currentNumber.ToString(), currentOperation);
-                SetCurrentNumber(result);
-                lblLastNumber.Text = "";
-                currentOperation = "";
-            }
-        }
-
-        private void btnPercent_Click(object sender, EventArgs e)
-        {
-            double val = Convert.ToDouble(currentNumber.ToString());
-            SetCurrentNumber(Convert.ToString(val / 100));
-        }
-
-        private void btnSqrt_Click(object sender, EventArgs e)
-        {
-            double val = Convert.ToDouble(currentNumber.ToString());
-            SetCurrentNumber(Convert.ToString(Math.Sqrt(val)));
-        }
-
-        private void btnSquare_Click(object sender, EventArgs e)
-        {
-            double val = Convert.ToDouble(currentNumber.ToString());
-            SetCurrentNumber(Convert.ToString(Math.Pow(val, 2)));
-        }
-
-        private void btnReverseX_Click(object sender, EventArgs e)
-        {
-            double val = Convert.ToDouble(currentNumber.ToString());
-            SetCurrentNumber(Convert.ToString(1 / val));
-        }
-
-        private void btnMemoryPlus_Click(object sender, EventArgs e)
-        {
-            if (lblCurrentNumber.Text == "Ошибка") return;
-
-            memory += Convert.ToDouble(lblCurrentNumber.Text);
-            lblMemoryNumber.Text = memory.ToString();
-        }
-
-        private void btnMemoryMinus_Click(object sender, EventArgs e)
-        {
-            if (lblCurrentNumber.Text == "Ошибка") return;
-
-            memory -= Convert.ToDouble(lblCurrentNumber.Text);
-            lblMemoryNumber.Text = memory.ToString();
-        }
-
-        private void btnMemorySave_Click(object sender, EventArgs e)
-        {
-            if (lblCurrentNumber.Text == "Ошибка") return;
-
-            memory = Convert.ToDouble(lblCurrentNumber.Text);
-            lblMemoryNumber.Text = memory.ToString();
-        }
-
+        // Память
+        private void btnMemoryPlus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemoryAdd(m));
+        private void btnMemoryMinus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySubtract(m));
+        private void btnMemorySave_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySave(m));
         private void btnMemoryClear_Click(object sender, EventArgs e)
         {
-            memory = 0;
-            lblMemoryNumber.Text = memory.ToString();
+            try
+            {
+                _memoryService.MemoryClear();
+                UpdateDisplay();
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
+        }
+
+        private void ProcessMemory(Action<double> memoryAction)
+        {
+            try
+            {
+                double currentValue = _formatter.ParseInput(lblCurrentNumber.Text);
+                memoryAction(currentValue);
+                UpdateDisplay();
+            }
+            catch (Exception ex)
+            {
+                ShowError(ex.Message);
+            }
         }
     }
 }
