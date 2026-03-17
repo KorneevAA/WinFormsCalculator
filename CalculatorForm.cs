@@ -12,12 +12,44 @@ namespace Calculator
         private readonly IMemoryService _memoryService = new MemoryService();
         private readonly DisplayFormatter _formatter = new DisplayFormatter();
         private bool _isNewInput = true;
+        private string _currentOperationSymbol = "";
+
+        // Minimum width of the calculator panel; history appears when form is wider.
+        private const int CalculatorPanelWidth = 281;
 
         public CalculatorForm()
         {
             InitializeComponent();
             UpdateDisplay();
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            // Fix the window height; allow only horizontal resize to reveal history.
+            MinimumSize = new Size(Width, Height);
+            MaximumSize = new Size(0, Height); // 0 = no limit in width
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (splitContainer1 == null)
+                return;
+
+            if (ShouldShowHistory() && splitContainer1.Panel2Collapsed)
+            {
+                splitContainer1.SplitterDistance = CalculatorPanelWidth;
+                splitContainer1.Panel2Collapsed = false;
+            }
+            else if (!ShouldShowHistory() && !splitContainer1.Panel2Collapsed)
+            {
+                splitContainer1.Panel2Collapsed = true;
+            }
+        }
+
+        private bool ShouldShowHistory() =>
+            ClientSize.Width >= CalculatorPanelWidth + splitContainer1.SplitterWidth + splitContainer1.Panel2MinSize;
 
         private void UpdateDisplay()
         {
@@ -96,6 +128,7 @@ namespace Calculator
                 }
 
                 _model.CurrentOperation = operationType;
+                _currentOperationSymbol = symbol;
                 lblLastNumber.Text = $"{_formatter.FormatNumber(_model.LastValue)} {symbol}";
                 _isNewInput = true;
             }
@@ -116,9 +149,13 @@ namespace Calculator
                 _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
 
+                // Record the completed expression in history (newest at top)
+                lstHistory.Items.Insert(0, FormatHistoryEntry(_model.LastValue, _currentOperationSymbol, _model.CurrentValue, result));
+
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
                 _model.CurrentOperation = OperationType.None;
+                _currentOperationSymbol = "";
                 _model.CurrentValue = result;
                 _isNewInput = true;
             }
@@ -250,9 +287,13 @@ namespace Calculator
             }
         }
 
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        // История
+        private void btnClearHistory_Click(object sender, EventArgs e)
         {
-
+            lstHistory.Items.Clear();
         }
+
+        private string FormatHistoryEntry(double left, string symbol, double right, double result) =>
+            $"{_formatter.FormatNumber(left)} {symbol} {_formatter.FormatNumber(right)} = {_formatter.FormatNumber(result)}";
     }
 }
