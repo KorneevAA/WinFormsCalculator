@@ -8,11 +8,6 @@ namespace WinFormsCalculator
         public double LastValue { get; set; }
         public OperationType CurrentOperation { get; set; }
 
-        public CalculatorModel()
-        {
-            Reset();
-        }
-
         public void Reset()
         {
             CurrentValue = 0;

@@ -61,6 +61,9 @@ namespace Calculator
             btnMemoryMinus = new Button();
             btnMemorySave = new Button();
             btnMemoryClear = new Button();
+            splitContainer1 = new SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.SuspendLayout();
             SuspendLayout();
             // 
             // btnAnswer
@@ -371,11 +374,23 @@ namespace Calculator
             btnMemoryClear.UseVisualStyleBackColor = true;
             btnMemoryClear.Click += btnMemoryClear_Click;
             // 
+            // splitContainer1
+            // 
+            splitContainer1.Location = new Point(117, 51);
+            splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Paint += splitContainer1_Panel1_Paint;
+            splitContainer1.Size = new Size(150, 100);
+            splitContainer1.TabIndex = 34;
+            // 
             // CalculatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(287, 550);
+            ClientSize = new Size(281, 550);
+            Controls.Add(splitContainer1);
             Controls.Add(btnMemoryClear);
             Controls.Add(btnMemorySave);
             Controls.Add(btnMemoryMinus);
@@ -409,6 +424,8 @@ namespace Calculator
             Controls.Add(btnAnswer);
             Name = "CalculatorForm";
             Text = "Калькулятор";
+            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
+            splitContainer1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -446,5 +463,6 @@ namespace Calculator
         private Button btnMemoryMinus;
         private Button btnMemorySave;
         private Button btnMemoryClear;
+        private SplitContainer splitContainer1;
     }
 }

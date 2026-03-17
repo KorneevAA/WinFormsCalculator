@@ -24,9 +24,6 @@ namespace WinFormsCalculator
                 _ => throw new ArgumentException($"Неподдерживаемая операция: {operationType}")
             };
 
-            if (double.IsNaN(result) || double.IsInfinity(result))
-                throw new InvalidOperationException("Результат вычисления не является числом");
-
             return result;
         }
 

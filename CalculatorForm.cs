@@ -115,7 +115,7 @@ namespace Calculator
 
                 _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-                
+
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
                 _model.CurrentOperation = OperationType.None;
@@ -140,7 +140,7 @@ namespace Calculator
             {
                 _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 double result = _controller.CalculateUnary(_model.CurrentValue, operationType);
-                
+
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 _model.CurrentValue = result;
                 _isNewInput = true;
@@ -248,6 +248,11 @@ namespace Calculator
             {
                 ShowError(ex.Message);
             }
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
