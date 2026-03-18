@@ -62,15 +62,25 @@ namespace Calculator
             btnMemorySave = new Button();
             btnMemoryClear = new Button();
             splitContainer1 = new SplitContainer();
+            splitContainer2 = new SplitContainer();
+            tableLayoutPanel1 = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // btnAnswer
             // 
-            btnAnswer.Location = new Point(211, 416);
+            btnAnswer.Dock = DockStyle.Fill;
+            btnAnswer.Location = new Point(231, 432);
+            btnAnswer.Margin = new Padding(0);
             btnAnswer.Name = "btnAnswer";
-            btnAnswer.Size = new Size(60, 60);
+            btnAnswer.Size = new Size(79, 78);
             btnAnswer.TabIndex = 0;
             btnAnswer.Text = "=";
             btnAnswer.UseVisualStyleBackColor = true;
@@ -78,9 +88,11 @@ namespace Calculator
             // 
             // btnSubstraction
             // 
-            btnSubstraction.Location = new Point(211, 350);
+            btnSubstraction.Dock = DockStyle.Fill;
+            btnSubstraction.Location = new Point(231, 288);
+            btnSubstraction.Margin = new Padding(0);
             btnSubstraction.Name = "btnSubstraction";
-            btnSubstraction.Size = new Size(60, 60);
+            btnSubstraction.Size = new Size(79, 72);
             btnSubstraction.TabIndex = 1;
             btnSubstraction.Text = "-";
             btnSubstraction.UseVisualStyleBackColor = true;
@@ -88,9 +100,11 @@ namespace Calculator
             // 
             // btnAddition
             // 
-            btnAddition.Location = new Point(211, 284);
+            btnAddition.Dock = DockStyle.Fill;
+            btnAddition.Location = new Point(231, 360);
+            btnAddition.Margin = new Padding(0);
             btnAddition.Name = "btnAddition";
-            btnAddition.Size = new Size(60, 60);
+            btnAddition.Size = new Size(79, 72);
             btnAddition.TabIndex = 2;
             btnAddition.Text = "+";
             btnAddition.UseVisualStyleBackColor = true;
@@ -98,9 +112,11 @@ namespace Calculator
             // 
             // btnDivision
             // 
-            btnDivision.Location = new Point(211, 218);
+            btnDivision.Dock = DockStyle.Fill;
+            btnDivision.Location = new Point(231, 144);
+            btnDivision.Margin = new Padding(0);
             btnDivision.Name = "btnDivision";
-            btnDivision.Size = new Size(60, 60);
+            btnDivision.Size = new Size(79, 72);
             btnDivision.TabIndex = 3;
             btnDivision.Text = "/";
             btnDivision.UseVisualStyleBackColor = true;
@@ -108,9 +124,11 @@ namespace Calculator
             // 
             // btnMultiplication
             // 
-            btnMultiplication.Location = new Point(211, 152);
+            btnMultiplication.Dock = DockStyle.Fill;
+            btnMultiplication.Location = new Point(231, 216);
+            btnMultiplication.Margin = new Padding(0);
             btnMultiplication.Name = "btnMultiplication";
-            btnMultiplication.Size = new Size(60, 60);
+            btnMultiplication.Size = new Size(79, 72);
             btnMultiplication.TabIndex = 4;
             btnMultiplication.Text = "*";
             btnMultiplication.UseVisualStyleBackColor = true;
@@ -118,9 +136,11 @@ namespace Calculator
             // 
             // btnBackspace
             // 
-            btnBackspace.Location = new Point(145, 152);
+            btnBackspace.Dock = DockStyle.Fill;
+            btnBackspace.Location = new Point(231, 72);
+            btnBackspace.Margin = new Padding(0);
             btnBackspace.Name = "btnBackspace";
-            btnBackspace.Size = new Size(60, 60);
+            btnBackspace.Size = new Size(79, 72);
             btnBackspace.TabIndex = 5;
             btnBackspace.Text = "<-";
             btnBackspace.UseVisualStyleBackColor = true;
@@ -128,9 +148,11 @@ namespace Calculator
             // 
             // btnClear
             // 
-            btnClear.Location = new Point(79, 152);
+            btnClear.Dock = DockStyle.Fill;
+            btnClear.Location = new Point(154, 72);
+            btnClear.Margin = new Padding(0);
             btnClear.Name = "btnClear";
-            btnClear.Size = new Size(60, 60);
+            btnClear.Size = new Size(77, 72);
             btnClear.TabIndex = 6;
             btnClear.Text = "C";
             btnClear.UseVisualStyleBackColor = true;
@@ -138,9 +160,11 @@ namespace Calculator
             // 
             // btnClearEntry
             // 
-            btnClearEntry.Location = new Point(11, 152);
+            btnClearEntry.Dock = DockStyle.Fill;
+            btnClearEntry.Location = new Point(77, 72);
+            btnClearEntry.Margin = new Padding(0);
             btnClearEntry.Name = "btnClearEntry";
-            btnClearEntry.Size = new Size(60, 60);
+            btnClearEntry.Size = new Size(77, 72);
             btnClearEntry.TabIndex = 7;
             btnClearEntry.Text = "CE";
             btnClearEntry.UseVisualStyleBackColor = true;
@@ -148,9 +172,11 @@ namespace Calculator
             // 
             // btnNine
             // 
-            btnNine.Location = new Point(145, 218);
+            btnNine.Dock = DockStyle.Fill;
+            btnNine.Location = new Point(154, 216);
+            btnNine.Margin = new Padding(0);
             btnNine.Name = "btnNine";
-            btnNine.Size = new Size(60, 60);
+            btnNine.Size = new Size(77, 72);
             btnNine.TabIndex = 8;
             btnNine.Text = "9";
             btnNine.UseVisualStyleBackColor = true;
@@ -158,9 +184,11 @@ namespace Calculator
             // 
             // btnEight
             // 
-            btnEight.Location = new Point(77, 218);
+            btnEight.Dock = DockStyle.Fill;
+            btnEight.Location = new Point(77, 216);
+            btnEight.Margin = new Padding(0);
             btnEight.Name = "btnEight";
-            btnEight.Size = new Size(60, 60);
+            btnEight.Size = new Size(77, 72);
             btnEight.TabIndex = 9;
             btnEight.Text = "8";
             btnEight.UseVisualStyleBackColor = true;
@@ -168,9 +196,11 @@ namespace Calculator
             // 
             // btnSeven
             // 
-            btnSeven.Location = new Point(11, 218);
+            btnSeven.Dock = DockStyle.Fill;
+            btnSeven.Location = new Point(0, 216);
+            btnSeven.Margin = new Padding(0);
             btnSeven.Name = "btnSeven";
-            btnSeven.Size = new Size(60, 60);
+            btnSeven.Size = new Size(77, 72);
             btnSeven.TabIndex = 10;
             btnSeven.Text = "7";
             btnSeven.UseVisualStyleBackColor = true;
@@ -178,9 +208,11 @@ namespace Calculator
             // 
             // btnSix
             // 
-            btnSix.Location = new Point(145, 284);
+            btnSix.Dock = DockStyle.Fill;
+            btnSix.Location = new Point(154, 288);
+            btnSix.Margin = new Padding(0);
             btnSix.Name = "btnSix";
-            btnSix.Size = new Size(60, 60);
+            btnSix.Size = new Size(77, 72);
             btnSix.TabIndex = 11;
             btnSix.Text = "6";
             btnSix.UseVisualStyleBackColor = true;
@@ -188,9 +220,11 @@ namespace Calculator
             // 
             // btnFive
             // 
-            btnFive.Location = new Point(77, 284);
+            btnFive.Dock = DockStyle.Fill;
+            btnFive.Location = new Point(77, 288);
+            btnFive.Margin = new Padding(0);
             btnFive.Name = "btnFive";
-            btnFive.Size = new Size(60, 60);
+            btnFive.Size = new Size(77, 72);
             btnFive.TabIndex = 12;
             btnFive.Text = "5";
             btnFive.UseVisualStyleBackColor = true;
@@ -198,9 +232,11 @@ namespace Calculator
             // 
             // btnFour
             // 
-            btnFour.Location = new Point(11, 284);
+            btnFour.Dock = DockStyle.Fill;
+            btnFour.Location = new Point(0, 288);
+            btnFour.Margin = new Padding(0);
             btnFour.Name = "btnFour";
-            btnFour.Size = new Size(60, 60);
+            btnFour.Size = new Size(77, 72);
             btnFour.TabIndex = 13;
             btnFour.Text = "4";
             btnFour.UseVisualStyleBackColor = true;
@@ -208,9 +244,11 @@ namespace Calculator
             // 
             // btnThree
             // 
-            btnThree.Location = new Point(145, 350);
+            btnThree.Dock = DockStyle.Fill;
+            btnThree.Location = new Point(154, 360);
+            btnThree.Margin = new Padding(0);
             btnThree.Name = "btnThree";
-            btnThree.Size = new Size(60, 60);
+            btnThree.Size = new Size(77, 72);
             btnThree.TabIndex = 14;
             btnThree.Text = "3";
             btnThree.UseVisualStyleBackColor = true;
@@ -218,9 +256,11 @@ namespace Calculator
             // 
             // btnTwo
             // 
-            btnTwo.Location = new Point(77, 350);
+            btnTwo.Dock = DockStyle.Fill;
+            btnTwo.Location = new Point(77, 360);
+            btnTwo.Margin = new Padding(0);
             btnTwo.Name = "btnTwo";
-            btnTwo.Size = new Size(60, 60);
+            btnTwo.Size = new Size(77, 72);
             btnTwo.TabIndex = 15;
             btnTwo.Text = "2";
             btnTwo.UseVisualStyleBackColor = true;
@@ -228,9 +268,11 @@ namespace Calculator
             // 
             // btnOne
             // 
-            btnOne.Location = new Point(11, 350);
+            btnOne.Dock = DockStyle.Fill;
+            btnOne.Location = new Point(0, 360);
+            btnOne.Margin = new Padding(0);
             btnOne.Name = "btnOne";
-            btnOne.Size = new Size(60, 60);
+            btnOne.Size = new Size(77, 72);
             btnOne.TabIndex = 16;
             btnOne.Text = "1";
             btnOne.UseVisualStyleBackColor = true;
@@ -238,9 +280,11 @@ namespace Calculator
             // 
             // btnDot
             // 
-            btnDot.Location = new Point(145, 416);
+            btnDot.Dock = DockStyle.Fill;
+            btnDot.Location = new Point(154, 432);
+            btnDot.Margin = new Padding(0);
             btnDot.Name = "btnDot";
-            btnDot.Size = new Size(60, 60);
+            btnDot.Size = new Size(77, 78);
             btnDot.TabIndex = 17;
             btnDot.Text = ",";
             btnDot.UseVisualStyleBackColor = true;
@@ -248,9 +292,11 @@ namespace Calculator
             // 
             // btnZero
             // 
-            btnZero.Location = new Point(79, 416);
+            btnZero.Dock = DockStyle.Fill;
+            btnZero.Location = new Point(77, 432);
+            btnZero.Margin = new Padding(0);
             btnZero.Name = "btnZero";
-            btnZero.Size = new Size(60, 60);
+            btnZero.Size = new Size(77, 78);
             btnZero.TabIndex = 18;
             btnZero.Text = "0";
             btnZero.UseVisualStyleBackColor = true;
@@ -258,9 +304,11 @@ namespace Calculator
             // 
             // btnChangeSign
             // 
-            btnChangeSign.Location = new Point(13, 416);
+            btnChangeSign.Dock = DockStyle.Fill;
+            btnChangeSign.Location = new Point(0, 432);
+            btnChangeSign.Margin = new Padding(0);
             btnChangeSign.Name = "btnChangeSign";
-            btnChangeSign.Size = new Size(60, 60);
+            btnChangeSign.Size = new Size(77, 78);
             btnChangeSign.TabIndex = 19;
             btnChangeSign.Text = "+/-";
             btnChangeSign.UseVisualStyleBackColor = true;
@@ -271,25 +319,30 @@ namespace Calculator
             lblLastNumber.AutoSize = true;
             lblLastNumber.Location = new Point(12, 9);
             lblLastNumber.Name = "lblLastNumber";
-            lblLastNumber.Size = new Size(0, 15);
+            lblLastNumber.Size = new Size(13, 15);
             lblLastNumber.TabIndex = 21;
+            lblLastNumber.Text = "0";
             // 
             // lblCurrentNumber
             // 
+            lblCurrentNumber.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblCurrentNumber.BackColor = SystemColors.Control;
             lblCurrentNumber.BorderStyle = BorderStyle.None;
             lblCurrentNumber.Font = new Font("Segoe UI", 14F);
-            lblCurrentNumber.Location = new Point(97, 55);
+            lblCurrentNumber.Location = new Point(133, 71);
             lblCurrentNumber.Name = "lblCurrentNumber";
             lblCurrentNumber.Size = new Size(174, 25);
             lblCurrentNumber.TabIndex = 23;
+            lblCurrentNumber.Text = "0";
             lblCurrentNumber.TextAlign = HorizontalAlignment.Right;
             // 
             // btnSqrt
             // 
-            btnSqrt.Location = new Point(145, 86);
+            btnSqrt.Dock = DockStyle.Fill;
+            btnSqrt.Location = new Point(154, 144);
+            btnSqrt.Margin = new Padding(0);
             btnSqrt.Name = "btnSqrt";
-            btnSqrt.Size = new Size(60, 60);
+            btnSqrt.Size = new Size(77, 72);
             btnSqrt.TabIndex = 25;
             btnSqrt.Text = "sqrt()";
             btnSqrt.UseVisualStyleBackColor = true;
@@ -297,9 +350,11 @@ namespace Calculator
             // 
             // btnSquare
             // 
-            btnSquare.Location = new Point(77, 86);
+            btnSquare.Dock = DockStyle.Fill;
+            btnSquare.Location = new Point(77, 144);
+            btnSquare.Margin = new Padding(0);
             btnSquare.Name = "btnSquare";
-            btnSquare.Size = new Size(60, 60);
+            btnSquare.Size = new Size(77, 72);
             btnSquare.TabIndex = 26;
             btnSquare.Text = "x^2";
             btnSquare.UseVisualStyleBackColor = true;
@@ -307,9 +362,11 @@ namespace Calculator
             // 
             // btnReverseX
             // 
-            btnReverseX.Location = new Point(13, 86);
+            btnReverseX.Dock = DockStyle.Fill;
+            btnReverseX.Location = new Point(0, 144);
+            btnReverseX.Margin = new Padding(0);
             btnReverseX.Name = "btnReverseX";
-            btnReverseX.Size = new Size(60, 60);
+            btnReverseX.Size = new Size(77, 72);
             btnReverseX.TabIndex = 27;
             btnReverseX.Text = "1/x";
             btnReverseX.UseVisualStyleBackColor = true;
@@ -317,9 +374,11 @@ namespace Calculator
             // 
             // btnPercent
             // 
-            btnPercent.Location = new Point(211, 86);
+            btnPercent.Dock = DockStyle.Fill;
+            btnPercent.Location = new Point(0, 72);
+            btnPercent.Margin = new Padding(0);
             btnPercent.Name = "btnPercent";
-            btnPercent.Size = new Size(60, 60);
+            btnPercent.Size = new Size(77, 72);
             btnPercent.TabIndex = 28;
             btnPercent.Text = "%";
             btnPercent.UseVisualStyleBackColor = true;
@@ -327,18 +386,22 @@ namespace Calculator
             // 
             // lblMemoryNumber
             // 
+            lblMemoryNumber.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblMemoryNumber.AutoSize = true;
-            lblMemoryNumber.Location = new Point(211, 9);
+            lblMemoryNumber.Location = new Point(235, 9);
             lblMemoryNumber.Name = "lblMemoryNumber";
             lblMemoryNumber.Size = new Size(13, 15);
             lblMemoryNumber.TabIndex = 29;
             lblMemoryNumber.Text = "0";
+            lblMemoryNumber.TextAlign = ContentAlignment.BottomRight;
             // 
             // btnMemoryPlus
             // 
-            btnMemoryPlus.Location = new Point(211, 482);
+            btnMemoryPlus.Dock = DockStyle.Fill;
+            btnMemoryPlus.Location = new Point(77, 0);
+            btnMemoryPlus.Margin = new Padding(0);
             btnMemoryPlus.Name = "btnMemoryPlus";
-            btnMemoryPlus.Size = new Size(60, 60);
+            btnMemoryPlus.Size = new Size(77, 72);
             btnMemoryPlus.TabIndex = 30;
             btnMemoryPlus.Text = "M+";
             btnMemoryPlus.UseVisualStyleBackColor = true;
@@ -346,9 +409,11 @@ namespace Calculator
             // 
             // btnMemoryMinus
             // 
-            btnMemoryMinus.Location = new Point(145, 482);
+            btnMemoryMinus.Dock = DockStyle.Fill;
+            btnMemoryMinus.Location = new Point(154, 0);
+            btnMemoryMinus.Margin = new Padding(0);
             btnMemoryMinus.Name = "btnMemoryMinus";
-            btnMemoryMinus.Size = new Size(60, 60);
+            btnMemoryMinus.Size = new Size(77, 72);
             btnMemoryMinus.TabIndex = 31;
             btnMemoryMinus.Text = "M-";
             btnMemoryMinus.UseVisualStyleBackColor = true;
@@ -356,9 +421,11 @@ namespace Calculator
             // 
             // btnMemorySave
             // 
-            btnMemorySave.Location = new Point(77, 482);
+            btnMemorySave.Dock = DockStyle.Fill;
+            btnMemorySave.Location = new Point(231, 0);
+            btnMemorySave.Margin = new Padding(0);
             btnMemorySave.Name = "btnMemorySave";
-            btnMemorySave.Size = new Size(60, 60);
+            btnMemorySave.Size = new Size(79, 72);
             btnMemorySave.TabIndex = 32;
             btnMemorySave.Text = "MS";
             btnMemorySave.UseVisualStyleBackColor = true;
@@ -366,9 +433,11 @@ namespace Calculator
             // 
             // btnMemoryClear
             // 
-            btnMemoryClear.Location = new Point(11, 482);
+            btnMemoryClear.Dock = DockStyle.Fill;
+            btnMemoryClear.Location = new Point(0, 0);
+            btnMemoryClear.Margin = new Padding(0);
             btnMemoryClear.Name = "btnMemoryClear";
-            btnMemoryClear.Size = new Size(60, 60);
+            btnMemoryClear.Size = new Size(77, 72);
             btnMemoryClear.TabIndex = 33;
             btnMemoryClear.Text = "MC";
             btnMemoryClear.UseVisualStyleBackColor = true;
@@ -376,58 +445,107 @@ namespace Calculator
             // 
             // splitContainer1
             // 
-            splitContainer1.Location = new Point(117, 51);
+            splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.Location = new Point(0, 0);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(splitContainer2);
             splitContainer1.Panel1.Paint += splitContainer1_Panel1_Paint;
-            splitContainer1.Size = new Size(150, 100);
+            splitContainer1.Panel2Collapsed = true;
+            splitContainer1.Size = new Size(310, 613);
+            splitContainer1.SplitterDistance = 322;
             splitContainer1.TabIndex = 34;
+            // 
+            // splitContainer2
+            // 
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(0, 0);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(lblLastNumber);
+            splitContainer2.Panel1.Controls.Add(lblCurrentNumber);
+            splitContainer2.Panel1.Controls.Add(lblMemoryNumber);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(tableLayoutPanel1);
+            splitContainer2.Size = new Size(310, 613);
+            splitContainer2.SplitterDistance = 99;
+            splitContainer2.TabIndex = 0;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.ColumnCount = 4;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.Controls.Add(btnPercent, 0, 1);
+            tableLayoutPanel1.Controls.Add(btnClearEntry, 1, 1);
+            tableLayoutPanel1.Controls.Add(btnMemoryClear, 0, 0);
+            tableLayoutPanel1.Controls.Add(btnAnswer, 3, 6);
+            tableLayoutPanel1.Controls.Add(btnDot, 2, 6);
+            tableLayoutPanel1.Controls.Add(btnZero, 1, 6);
+            tableLayoutPanel1.Controls.Add(btnChangeSign, 0, 6);
+            tableLayoutPanel1.Controls.Add(btnSqrt, 2, 2);
+            tableLayoutPanel1.Controls.Add(btnTwo, 1, 5);
+            tableLayoutPanel1.Controls.Add(btnAddition, 3, 5);
+            tableLayoutPanel1.Controls.Add(btnOne, 0, 5);
+            tableLayoutPanel1.Controls.Add(btnFour, 0, 4);
+            tableLayoutPanel1.Controls.Add(btnThree, 2, 5);
+            tableLayoutPanel1.Controls.Add(btnReverseX, 0, 2);
+            tableLayoutPanel1.Controls.Add(btnSquare, 1, 2);
+            tableLayoutPanel1.Controls.Add(btnFive, 1, 4);
+            tableLayoutPanel1.Controls.Add(btnSix, 2, 4);
+            tableLayoutPanel1.Controls.Add(btnSubstraction, 3, 4);
+            tableLayoutPanel1.Controls.Add(btnMultiplication, 3, 3);
+            tableLayoutPanel1.Controls.Add(btnSeven, 0, 3);
+            tableLayoutPanel1.Controls.Add(btnMemoryPlus, 1, 0);
+            tableLayoutPanel1.Controls.Add(btnMemorySave, 3, 0);
+            tableLayoutPanel1.Controls.Add(btnMemoryMinus, 2, 0);
+            tableLayoutPanel1.Controls.Add(btnNine, 2, 3);
+            tableLayoutPanel1.Controls.Add(btnClear, 2, 1);
+            tableLayoutPanel1.Controls.Add(btnDivision, 3, 2);
+            tableLayoutPanel1.Controls.Add(btnEight, 1, 3);
+            tableLayoutPanel1.Controls.Add(btnBackspace, 3, 1);
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Margin = new Padding(2);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 7;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel1.Size = new Size(310, 510);
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // CalculatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(281, 550);
+            ClientSize = new Size(310, 613);
             Controls.Add(splitContainer1);
-            Controls.Add(btnMemoryClear);
-            Controls.Add(btnMemorySave);
-            Controls.Add(btnMemoryMinus);
-            Controls.Add(btnMemoryPlus);
-            Controls.Add(lblMemoryNumber);
-            Controls.Add(btnPercent);
-            Controls.Add(btnReverseX);
-            Controls.Add(btnSquare);
-            Controls.Add(btnSqrt);
-            Controls.Add(lblCurrentNumber);
-            Controls.Add(lblLastNumber);
-            Controls.Add(btnChangeSign);
-            Controls.Add(btnZero);
-            Controls.Add(btnDot);
-            Controls.Add(btnOne);
-            Controls.Add(btnTwo);
-            Controls.Add(btnThree);
-            Controls.Add(btnFour);
-            Controls.Add(btnFive);
-            Controls.Add(btnSix);
-            Controls.Add(btnSeven);
-            Controls.Add(btnEight);
-            Controls.Add(btnNine);
-            Controls.Add(btnClearEntry);
-            Controls.Add(btnClear);
-            Controls.Add(btnBackspace);
-            Controls.Add(btnMultiplication);
-            Controls.Add(btnDivision);
-            Controls.Add(btnAddition);
-            Controls.Add(btnSubstraction);
-            Controls.Add(btnAnswer);
             Name = "CalculatorForm";
             Text = "Калькулятор";
+            splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel1.PerformLayout();
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -464,5 +582,7 @@ namespace Calculator
         private Button btnMemorySave;
         private Button btnMemoryClear;
         private SplitContainer splitContainer1;
+        private SplitContainer splitContainer2;
+        private TableLayoutPanel tableLayoutPanel1;
     }
 }
