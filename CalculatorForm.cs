@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
 using WinFormsCalculator;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Calculator
 {
@@ -11,15 +13,19 @@ namespace Calculator
         private readonly IInputProcessor _inputProcessor = new InputProcessor();
         private readonly IMemoryService _memoryService = new MemoryService();
         private readonly DisplayFormatter _formatter = new DisplayFormatter();
+
+        private bool _isHistoryCollapsed = true;
         private bool _isNewInput = true;
+        private const int collapseSize = 600;
+        private double splitPercentage = 0.5;
 
         public CalculatorForm()
         {
             InitializeComponent();
-            UpdateDisplay();
+            UpdateMemoryDisplay();
         }
 
-        private void UpdateDisplay()
+        private void UpdateMemoryDisplay()
         {
             lblMemoryNumber.Text = _formatter.FormatNumber(_memoryService.Memory);
         }
@@ -31,7 +37,7 @@ namespace Calculator
             lblCurrentNumber.Text = "0";
             lblLastNumber.Text = "";
             _isNewInput = true;
-            UpdateDisplay();
+            UpdateMemoryDisplay();
         }
 
         private void ShowError(string message)
@@ -40,7 +46,6 @@ namespace Calculator
             ClearCalculator();
         }
 
-        // Цифры
         private void btnZero_Click(object sender, EventArgs e) => ProcessNumber("0");
         private void btnOne_Click(object sender, EventArgs e) => ProcessNumber("1");
         private void btnTwo_Click(object sender, EventArgs e) => ProcessNumber("2");
@@ -72,7 +77,6 @@ namespace Calculator
             }
         }
 
-        // Операции
         private void btnAddition_Click(object sender, EventArgs e) => ProcessOperation("+", OperationType.Addition);
         private void btnSubstraction_Click(object sender, EventArgs e) => ProcessOperation("-", OperationType.Subtraction);
         private void btnMultiplication_Click(object sender, EventArgs e) => ProcessOperation("*", OperationType.Multiplication);
@@ -87,6 +91,8 @@ namespace Calculator
                 if (_model.CurrentOperation != OperationType.None)
                 {
                     double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
+                    var historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
+                    listBox1.Items.Add(historyItem.ToString());
                     _model.LastValue = result;
                     lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 }
@@ -105,7 +111,6 @@ namespace Calculator
             }
         }
 
-        // Равно
         private void btnAnswer_Click(object sender, EventArgs e)
         {
             try
@@ -115,7 +120,8 @@ namespace Calculator
 
                 _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-
+                var historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
+                listBox1.Items.Add(historyItem.ToString());
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
                 _model.CurrentOperation = OperationType.None;
@@ -128,7 +134,6 @@ namespace Calculator
             }
         }
 
-        // Специальные функции
         private void btnPercent_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.Percent);
         private void btnSqrt_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.SquareRoot);
         private void btnSquare_Click(object sender, EventArgs e) => ProcessUnaryOperation(OperationType.Square);
@@ -151,7 +156,6 @@ namespace Calculator
             }
         }
 
-        // Очистка
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearCalculator();
@@ -164,7 +168,6 @@ namespace Calculator
             _isNewInput = true;
         }
 
-        // Backspace
         private void btnBackspace_Click(object sender, EventArgs e)
         {
             try
@@ -184,7 +187,6 @@ namespace Calculator
             }
         }
 
-        // Смена знака
         private void btnChangeSign_Click(object sender, EventArgs e)
         {
             try
@@ -198,7 +200,6 @@ namespace Calculator
             }
         }
 
-        // Десятичная точка
         private void btnDot_Click(object sender, EventArgs e)
         {
             try
@@ -219,7 +220,6 @@ namespace Calculator
             }
         }
 
-        // Память
         private void btnMemoryPlus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemoryAdd(m));
         private void btnMemoryMinus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySubtract(m));
         private void btnMemorySave_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySave(m));
@@ -228,7 +228,7 @@ namespace Calculator
             try
             {
                 _memoryService.MemoryClear();
-                UpdateDisplay();
+                UpdateMemoryDisplay();
             }
             catch (Exception ex)
             {
@@ -242,7 +242,7 @@ namespace Calculator
             {
                 double currentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 memoryAction(currentValue);
-                UpdateDisplay();
+                UpdateMemoryDisplay();
             }
             catch (Exception ex)
             {
@@ -250,9 +250,47 @@ namespace Calculator
             }
         }
 
-        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void bCleanHistory_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        }
+
+        private void CalculatorForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CalculatorForm_Resize(object sender, EventArgs e)
+        {
+            if (this.Width < collapseSize)
+            {
+                _isHistoryCollapsed = true;
+                splitContainer1.Panel2Collapsed = true;
+                splitContainer1.SplitterDistance = (int)(this.Width * splitPercentage);
+            }
+            else
+            {
+                _isHistoryCollapsed = false;
+                splitContainer1.Panel2Collapsed = false;
+            }
+        }
+
+        private void показатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _isHistoryCollapsed = false;
+            splitContainer1.Panel2Collapsed = false;
+        }
+
+        private void спрятатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _isHistoryCollapsed = true;
+            splitContainer1.Panel2Collapsed = true;
         }
     }
 }
