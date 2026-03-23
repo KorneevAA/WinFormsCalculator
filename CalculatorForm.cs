@@ -91,8 +91,6 @@ namespace Calculator
                 if (_model.CurrentOperation != OperationType.None)
                 {
                     double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-                    var historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
-                    listBox1.Items.Add(historyItem.ToString());
                     _model.LastValue = result;
                     lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 }
@@ -120,8 +118,8 @@ namespace Calculator
 
                 _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
                 double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-                var historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
-                listBox1.Items.Add(historyItem.ToString());
+                HistoryItem historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
+                historyItem.AddToHistroy(panel1);
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
                 _model.CurrentOperation = OperationType.None;
@@ -250,15 +248,13 @@ namespace Calculator
             }
         }
 
-
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void bCleanHistory_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
         }
 
         private void CalculatorForm_Load(object sender, EventArgs e)
@@ -291,6 +287,16 @@ namespace Calculator
         {
             _isHistoryCollapsed = true;
             splitContainer1.Panel2Collapsed = true;
+        }
+        private Control? GetLastControl(Panel panel)
+        {
+            if (panel.Controls.Count == 0)
+                return null;
+            return panel.Controls[panel.Controls.Count - 1];
+        }
+        private void btn_ClearHistory_Click(object sender, EventArgs e)
+        {
+            panel1.Controls.Clear();
         }
     }
 }
