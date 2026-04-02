@@ -4,11 +4,10 @@ namespace WinFormsCalculator
 {
     internal class CalculatorController
     {
-        private readonly OperationFactory _operationFactory = new OperationFactory();
 
         public double Calculate(double a, double b, OperationType operationType)
         {
-            var operation = _operationFactory.GetOperation(operationType);
+            var operation = OperationFactory.GetOperation(operationType);
             double result = operation.Calculate(a, b);
             return result;
         }

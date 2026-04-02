@@ -32,9 +32,9 @@ namespace WinFormsCalculator
         public OperationType OperationType => OperationType.Division;
     }
 
-    public class OperationFactory
+    public static class OperationFactory
     {
-        public IOperation GetOperation(OperationType operationType)
+        public static IOperation GetOperation(OperationType operationType)
         {
             return operationType switch
             {
@@ -44,6 +44,17 @@ namespace WinFormsCalculator
                 OperationType.Division => new DivisionOperation(),
                 _ => throw new ArgumentException($"Неизвестная операция: {operationType}")
             };
+        }
+        public static string GetOperationSymbol(OperationType operationType)
+        {
+             return operationType switch
+             {
+                OperationType.Addition => "+",
+                OperationType.Subtraction => "-",
+                OperationType.Division => "/",
+                OperationType.Multiplication => "*",
+                _ => ""
+             };
         }
     }
 }

@@ -1,43 +1,48 @@
-using System;
 using System.Diagnostics.Eventing.Reader;
-using System.Windows.Forms;
+using System.Reflection.Metadata.Ecma335;
 using WinFormsCalculator;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Calculator
 {
     public partial class CalculatorForm : Form
     {
-        private readonly CalculatorModel _model = new CalculatorModel();
         private readonly CalculatorController _controller = new CalculatorController();
         private readonly IInputProcessor _inputProcessor = new InputProcessor();
-        private readonly IMemoryService _memoryService = new MemoryService();
         private readonly DisplayFormatter _formatter = new DisplayFormatter();
+        private readonly MemoryService _memoryService;
 
-        private bool _isHistoryCollapsed = true;
+        private bool _isHistoryCollapsed = false;
         private bool _isNewInput = true;
-        private const int collapseSize = 600;
         private double splitPercentage = 0.5;
+        private int collapseSize = 600;
 
         public CalculatorForm()
         {
             InitializeComponent();
-            UpdateMemoryDisplay();
+            _memoryService = new MemoryService(panel2);
+            lblCurrentNumber.TextChanged += LblCurrentNumber_TextChanged;
         }
 
-        private void UpdateMemoryDisplay()
+        private void LblCurrentNumber_TextChanged(object sender, EventArgs e)
         {
-            lblMemoryNumber.Text = _formatter.FormatNumber(_memoryService.Memory);
+            try
+            {
+                if (!string.IsNullOrEmpty(lblCurrentNumber.Text))
+                {
+                    CalculatorModel.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
+                }
+            }
+            catch
+            {
+            }
         }
 
         private void ClearCalculator()
         {
-            _model.Reset();
-            _memoryService.MemoryClear();
+            CalculatorModel.Reset();
             lblCurrentNumber.Text = "0";
             lblLastNumber.Text = "";
             _isNewInput = true;
-            UpdateMemoryDisplay();
         }
 
         private void ShowError(string message)
@@ -86,21 +91,21 @@ namespace Calculator
         {
             try
             {
-                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
-
-                if (_model.CurrentOperation != OperationType.None)
+                if (CalculatorModel.CurrentOperation != OperationType.None)
                 {
-                    double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-                    _model.LastValue = result;
+                    double result = _controller.Calculate(CalculatorModel.LastValue, CalculatorModel.CurrentValue, CalculatorModel.CurrentOperation);
+                    HistoryItem historyItem = new HistoryItem(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
+                    historyItem.AddToHistroy(panel1);
+                    CalculatorModel.LastValue = result;
                     lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 }
                 else
                 {
-                    _model.LastValue = _model.CurrentValue;
+                    CalculatorModel.LastValue = CalculatorModel.CurrentValue;
                 }
 
-                _model.CurrentOperation = operationType;
-                lblLastNumber.Text = $"{_formatter.FormatNumber(_model.LastValue)} {symbol}";
+                CalculatorModel.CurrentOperation = operationType;
+                lblLastNumber.Text = $"{_formatter.FormatNumber(CalculatorModel.LastValue)} {symbol}";
                 _isNewInput = true;
             }
             catch (Exception ex)
@@ -113,17 +118,15 @@ namespace Calculator
         {
             try
             {
-                if (_model.CurrentOperation == OperationType.None)
+                if (CalculatorModel.CurrentOperation == OperationType.None)
                     return;
-
-                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
-                double result = _controller.Calculate(_model.LastValue, _model.CurrentValue, _model.CurrentOperation);
-                HistoryItem historyItem = new HistoryItem(_model.LastValue, _model.CurrentOperation, _model.CurrentValue, result);
+                double result = _controller.Calculate(CalculatorModel.LastValue, CalculatorModel.CurrentValue, CalculatorModel.CurrentOperation);
+                HistoryItem historyItem = new HistoryItem(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
                 historyItem.AddToHistroy(panel1);
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
-                _model.CurrentOperation = OperationType.None;
-                _model.CurrentValue = result;
+                CalculatorModel.CurrentOperation = OperationType.None;
+                CalculatorModel.CurrentValue = result;
                 _isNewInput = true;
             }
             catch (Exception ex)
@@ -141,11 +144,8 @@ namespace Calculator
         {
             try
             {
-                _model.CurrentValue = _formatter.ParseInput(lblCurrentNumber.Text);
-                double result = _controller.CalculateUnary(_model.CurrentValue, operationType);
-
+                double result = _controller.CalculateUnary(CalculatorModel.CurrentValue, operationType);
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
-                _model.CurrentValue = result;
                 _isNewInput = true;
             }
             catch (Exception ex)
@@ -162,7 +162,6 @@ namespace Calculator
         private void btnClearEntry_Click(object sender, EventArgs e)
         {
             lblCurrentNumber.Text = "0";
-            _model.CurrentValue = 0;
             _isNewInput = true;
         }
 
@@ -218,49 +217,6 @@ namespace Calculator
             }
         }
 
-        private void btnMemoryPlus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemoryAdd(m));
-        private void btnMemoryMinus_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySubtract(m));
-        private void btnMemorySave_Click(object sender, EventArgs e) => ProcessMemory(m => _memoryService.MemorySave(m));
-        private void btnMemoryClear_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                _memoryService.MemoryClear();
-                UpdateMemoryDisplay();
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }
-        }
-
-        private void ProcessMemory(Action<double> memoryAction)
-        {
-            try
-            {
-                double currentValue = _formatter.ParseInput(lblCurrentNumber.Text);
-                memoryAction(currentValue);
-                UpdateMemoryDisplay();
-            }
-            catch (Exception ex)
-            {
-                ShowError(ex.Message);
-            }
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //
-        }
-
-        private void bCleanHistory_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void CalculatorForm_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void CalculatorForm_Resize(object sender, EventArgs e)
         {
@@ -275,6 +231,8 @@ namespace Calculator
                 _isHistoryCollapsed = false;
                 splitContainer1.Panel2Collapsed = false;
             }
+            btnMemoryClear.Size = btnZero.Size;
+            btnMemorySave.Size = btnZero.Size;
         }
 
         private void показатьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -288,15 +246,20 @@ namespace Calculator
             _isHistoryCollapsed = true;
             splitContainer1.Panel2Collapsed = true;
         }
-        private Control? GetLastControl(Panel panel)
-        {
-            if (panel.Controls.Count == 0)
-                return null;
-            return panel.Controls[panel.Controls.Count - 1];
-        }
+
         private void btn_ClearHistory_Click(object sender, EventArgs e)
         {
             panel1.Controls.Clear();
+        }
+
+        private void btnMemorySave_Click(object sender, EventArgs e)
+        {
+            _memoryService.MemorySave(CalculatorModel.CurrentValue);
+        }
+
+        private void btnMemoryClear_Click(object sender, EventArgs e)
+        {
+            _memoryService.MemoryClear();
         }
     }
 }

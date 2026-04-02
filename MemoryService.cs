@@ -1,19 +1,84 @@
-﻿using System;
+﻿using System.Linq;
 
 namespace WinFormsCalculator
 {
-    internal class MemoryService : IMemoryService
+    public class MemoryService
     {
-        public double Memory { get; private set; }
+        private Panel _memoryPanel;
+        private List<MemoryItem> _memoryItems = new List<MemoryItem>();
+        private Label _noMemoryLabel;
+        public MemoryService(Panel memoryPanel)
+        {
+            _memoryPanel = memoryPanel;
+            _noMemoryLabel = new Label()
+            {
+                Dock = DockStyle.Fill,
+                Text = "Память пуста",
+                TextAlign = ContentAlignment.MiddleCenter
+            };
+           _memoryPanel.Controls.Add(_noMemoryLabel);
+        }
 
-        public List<string> MemoryHistory { get; private set; } = new List<string>();
+        public void MemorySave(double value)
+        {
+            if (_memoryPanel.Controls.Contains(_noMemoryLabel))
+            {
+                _memoryPanel.Controls.Remove(_noMemoryLabel);
+            }
+            MemoryItem memoryItem = new MemoryItem(value);
+            var lastControl = _memoryPanel.GetLastControl();
+            var groupBox = memoryItem.GetGroupBox(_memoryPanel.ClientSize.Width);
+            if (lastControl == null)
+            {
+                memoryItem.RequestDelete += OnMemoryItemDeleteRequest;
+                _memoryPanel.Controls.Add(groupBox);
+                _memoryItems.Add(memoryItem);
+                return;
+            }
+            groupBox.Location = new Point(groupBox.Location.X, lastControl.Location.Y + lastControl.Height);
+            memoryItem.RequestDelete += OnMemoryItemDeleteRequest;
+            _memoryPanel.Controls.Add(groupBox);
+            _memoryItems.Add(memoryItem);
+            
+        }
+        private void OnMemoryItemDeleteRequest(object sender, Guid guid)
+        {
+            DeleteMemoryItem(guid);
+        }
+        public void DeleteMemoryItem(Guid guid)
+        {
+            var memoryItem = _memoryItems.FirstOrDefault(item => item.Guid == guid);
+            int index = _memoryItems.IndexOf(memoryItem);
+            _memoryItems.RemoveAt(index);
+            _memoryPanel.Controls.RemoveAt(index);
+            RefreshMemoryItemsPosition();
+            if (_memoryItems.Count == 0 && !_memoryPanel.Controls.Contains(_noMemoryLabel))
+            {
+                _memoryPanel.Controls.Add(_noMemoryLabel);
+                _noMemoryLabel.Dock = DockStyle.Fill;
+            }
+        }
+        public void MemoryClear()
+        {
+            _memoryItems.Clear();
+            _memoryPanel.Controls.Clear();
+            _memoryPanel.Controls.Add(_noMemoryLabel);
+        }
+        private void RefreshMemoryItemsPosition()
+        {
+            int currentY = 0;
 
-        public void MemoryAdd(double value) => Memory += value;
+            foreach (Control control in _memoryPanel.Controls)
+            {
+                if (control is GroupBox)
+                {
+                    control.Location = new Point(control.Location.X, currentY);
+                    currentY += control.Height;
+                }
+            }
 
-        public void MemorySubtract(double value) => Memory -= value;
+            _memoryPanel.Refresh();
+        }
 
-        public void MemorySave(double value) => Memory = value;
-
-        public void MemoryClear() => Memory = 0;
     }
 }

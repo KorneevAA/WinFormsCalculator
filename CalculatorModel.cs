@@ -2,13 +2,13 @@
 
 namespace WinFormsCalculator
 {
-    internal class CalculatorModel
+    internal static class CalculatorModel
     {
-        public double CurrentValue { get; set; }
-        public double LastValue { get; set; }
-        public OperationType CurrentOperation { get; set; }
+        public static double CurrentValue { get; set; }
+        public  static double LastValue { get; set; }
+        public static OperationType CurrentOperation { get; set; }
 
-        public void Reset()
+        public static void Reset()
         {
             CurrentValue = 0;
             LastValue = 0;

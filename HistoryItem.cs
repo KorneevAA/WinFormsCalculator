@@ -24,17 +24,10 @@ namespace WinFormsCalculator
         {
             var groupBox = new GroupBox()
             {
-                Size = new Size(panel.Size.Width, 50),
+                Size = new Size(panel.ClientSize.Width, 50),
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Right,
             };
-            var operationSymbol = OperationType switch
-            {
-                OperationType.Addition => "+",
-                OperationType.Subtraction => "-",
-                OperationType.Division => "/",
-                OperationType.Multiplication => "*",
-                _ => ""
-            };
+            var operationSymbol = OperationFactory.GetOperationSymbol(OperationType);
             var lblEx1 = new Label()
             {
                 Size = new Size(groupBox.Size.Width, groupBox.Size.Height),

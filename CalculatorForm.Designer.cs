@@ -30,7 +30,6 @@ namespace Calculator
         /// </summary>
         private void InitializeComponent()
         {
-            btnAnswer = new Button();
             btnSubstraction = new Button();
             btnAddition = new Button();
             btnDivision = new Button();
@@ -47,9 +46,6 @@ namespace Calculator
             btnThree = new Button();
             btnTwo = new Button();
             btnOne = new Button();
-            btnDot = new Button();
-            btnZero = new Button();
-            btnChangeSign = new Button();
             lblLastNumber = new Label();
             lblCurrentNumber = new TextBox();
             btnSqrt = new Button();
@@ -57,10 +53,7 @@ namespace Calculator
             btnReverseX = new Button();
             btnPercent = new Button();
             lblMemoryNumber = new Label();
-            btnMemoryPlus = new Button();
-            btnMemoryMinus = new Button();
             btnMemorySave = new Button();
-            btnMemoryClear = new Button();
             splitContainer1 = new SplitContainer();
             splitContainer2 = new SplitContainer();
             menuStrip1 = new MenuStrip();
@@ -68,11 +61,17 @@ namespace Calculator
             показатьToolStripMenuItem = new ToolStripMenuItem();
             спрятатьToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnAnswer = new Button();
+            btnDot = new Button();
+            btnZero = new Button();
+            btnChangeSign = new Button();
             tabControl1 = new TabControl();
             tpHistoryPage = new TabPage();
             panel1 = new Panel();
             btn_ClearHistory = new Button();
             tpMemoryPage = new TabPage();
+            btnMemoryClear = new Button();
+            panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -85,19 +84,8 @@ namespace Calculator
             tableLayoutPanel1.SuspendLayout();
             tabControl1.SuspendLayout();
             tpHistoryPage.SuspendLayout();
+            tpMemoryPage.SuspendLayout();
             SuspendLayout();
-            // 
-            // btnAnswer
-            // 
-            btnAnswer.Dock = DockStyle.Fill;
-            btnAnswer.Location = new Point(192, 324);
-            btnAnswer.Margin = new Padding(0);
-            btnAnswer.Name = "btnAnswer";
-            btnAnswer.Size = new Size(67, 55);
-            btnAnswer.TabIndex = 0;
-            btnAnswer.Text = "=";
-            btnAnswer.UseVisualStyleBackColor = true;
-            btnAnswer.Click += btnAnswer_Click;
             // 
             // btnSubstraction
             // 
@@ -291,42 +279,6 @@ namespace Calculator
             btnOne.UseVisualStyleBackColor = true;
             btnOne.Click += btnOne_Click;
             // 
-            // btnDot
-            // 
-            btnDot.Dock = DockStyle.Fill;
-            btnDot.Location = new Point(128, 324);
-            btnDot.Margin = new Padding(0);
-            btnDot.Name = "btnDot";
-            btnDot.Size = new Size(64, 55);
-            btnDot.TabIndex = 17;
-            btnDot.Text = ",";
-            btnDot.UseVisualStyleBackColor = true;
-            btnDot.Click += btnDot_Click;
-            // 
-            // btnZero
-            // 
-            btnZero.Dock = DockStyle.Fill;
-            btnZero.Location = new Point(64, 324);
-            btnZero.Margin = new Padding(0);
-            btnZero.Name = "btnZero";
-            btnZero.Size = new Size(64, 55);
-            btnZero.TabIndex = 18;
-            btnZero.Text = "0";
-            btnZero.UseVisualStyleBackColor = true;
-            btnZero.Click += btnZero_Click;
-            // 
-            // btnChangeSign
-            // 
-            btnChangeSign.Dock = DockStyle.Fill;
-            btnChangeSign.Location = new Point(0, 324);
-            btnChangeSign.Margin = new Padding(0);
-            btnChangeSign.Name = "btnChangeSign";
-            btnChangeSign.Size = new Size(64, 55);
-            btnChangeSign.TabIndex = 19;
-            btnChangeSign.Text = "+/-";
-            btnChangeSign.UseVisualStyleBackColor = true;
-            btnChangeSign.Click += btnChangeSign_Click;
-            // 
             // lblLastNumber
             // 
             lblLastNumber.AutoSize = true;
@@ -408,34 +360,10 @@ namespace Calculator
             lblMemoryNumber.Text = "0";
             lblMemoryNumber.TextAlign = ContentAlignment.BottomRight;
             // 
-            // btnMemoryPlus
-            // 
-            btnMemoryPlus.Dock = DockStyle.Fill;
-            btnMemoryPlus.Location = new Point(64, 0);
-            btnMemoryPlus.Margin = new Padding(0);
-            btnMemoryPlus.Name = "btnMemoryPlus";
-            btnMemoryPlus.Size = new Size(64, 54);
-            btnMemoryPlus.TabIndex = 30;
-            btnMemoryPlus.Text = "M+";
-            btnMemoryPlus.UseVisualStyleBackColor = true;
-            btnMemoryPlus.Click += btnMemoryPlus_Click;
-            // 
-            // btnMemoryMinus
-            // 
-            btnMemoryMinus.Dock = DockStyle.Fill;
-            btnMemoryMinus.Location = new Point(128, 0);
-            btnMemoryMinus.Margin = new Padding(0);
-            btnMemoryMinus.Name = "btnMemoryMinus";
-            btnMemoryMinus.Size = new Size(64, 54);
-            btnMemoryMinus.TabIndex = 31;
-            btnMemoryMinus.Text = "M-";
-            btnMemoryMinus.UseVisualStyleBackColor = true;
-            btnMemoryMinus.Click += btnMemoryMinus_Click;
-            // 
             // btnMemorySave
             // 
-            btnMemorySave.Dock = DockStyle.Fill;
-            btnMemorySave.Location = new Point(192, 0);
+            btnMemorySave.Dock = DockStyle.Left;
+            btnMemorySave.Location = new Point(3, 376);
             btnMemorySave.Margin = new Padding(0);
             btnMemorySave.Name = "btnMemorySave";
             btnMemorySave.Size = new Size(67, 54);
@@ -443,18 +371,6 @@ namespace Calculator
             btnMemorySave.Text = "MS";
             btnMemorySave.UseVisualStyleBackColor = true;
             btnMemorySave.Click += btnMemorySave_Click;
-            // 
-            // btnMemoryClear
-            // 
-            btnMemoryClear.Dock = DockStyle.Fill;
-            btnMemoryClear.Location = new Point(0, 0);
-            btnMemoryClear.Margin = new Padding(0);
-            btnMemoryClear.Name = "btnMemoryClear";
-            btnMemoryClear.Size = new Size(64, 54);
-            btnMemoryClear.TabIndex = 33;
-            btnMemoryClear.Text = "MC";
-            btnMemoryClear.UseVisualStyleBackColor = true;
-            btnMemoryClear.Click += btnMemoryClear_Click;
             // 
             // splitContainer1
             // 
@@ -466,12 +382,12 @@ namespace Calculator
             // splitContainer1.Panel1
             // 
             splitContainer1.Panel1.Controls.Add(splitContainer2);
-            splitContainer1.Panel1MinSize = 100;
+            splitContainer1.Panel1MinSize = 0;
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(tabControl1);
-            splitContainer1.Panel2MinSize = 50;
+            splitContainer1.Panel2MinSize = 0;
             splitContainer1.Size = new Size(670, 461);
             splitContainer1.SplitterDistance = 259;
             splitContainer1.TabIndex = 34;
@@ -489,10 +405,12 @@ namespace Calculator
             splitContainer2.Panel1.Controls.Add(lblCurrentNumber);
             splitContainer2.Panel1.Controls.Add(lblMemoryNumber);
             splitContainer2.Panel1.Controls.Add(menuStrip1);
+            splitContainer2.Panel1MinSize = 0;
             // 
             // splitContainer2.Panel2
             // 
             splitContainer2.Panel2.Controls.Add(tableLayoutPanel1);
+            splitContainer2.Panel2MinSize = 0;
             splitContainer2.Size = new Size(259, 461);
             splitContainer2.SplitterDistance = 78;
             splitContainer2.TabIndex = 0;
@@ -536,7 +454,6 @@ namespace Calculator
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.Controls.Add(btnPercent, 0, 1);
             tableLayoutPanel1.Controls.Add(btnClearEntry, 1, 1);
-            tableLayoutPanel1.Controls.Add(btnMemoryClear, 0, 0);
             tableLayoutPanel1.Controls.Add(btnAnswer, 3, 6);
             tableLayoutPanel1.Controls.Add(btnDot, 2, 6);
             tableLayoutPanel1.Controls.Add(btnZero, 1, 6);
@@ -554,9 +471,6 @@ namespace Calculator
             tableLayoutPanel1.Controls.Add(btnSubstraction, 3, 4);
             tableLayoutPanel1.Controls.Add(btnMultiplication, 3, 3);
             tableLayoutPanel1.Controls.Add(btnSeven, 0, 3);
-            tableLayoutPanel1.Controls.Add(btnMemoryPlus, 1, 0);
-            tableLayoutPanel1.Controls.Add(btnMemorySave, 3, 0);
-            tableLayoutPanel1.Controls.Add(btnMemoryMinus, 2, 0);
             tableLayoutPanel1.Controls.Add(btnNine, 2, 3);
             tableLayoutPanel1.Controls.Add(btnClear, 2, 1);
             tableLayoutPanel1.Controls.Add(btnDivision, 3, 2);
@@ -576,6 +490,54 @@ namespace Calculator
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
             tableLayoutPanel1.Size = new Size(259, 379);
             tableLayoutPanel1.TabIndex = 0;
+            // 
+            // btnAnswer
+            // 
+            btnAnswer.Dock = DockStyle.Fill;
+            btnAnswer.Location = new Point(192, 324);
+            btnAnswer.Margin = new Padding(0);
+            btnAnswer.Name = "btnAnswer";
+            btnAnswer.Size = new Size(67, 55);
+            btnAnswer.TabIndex = 0;
+            btnAnswer.Text = "=";
+            btnAnswer.UseVisualStyleBackColor = true;
+            btnAnswer.Click += btnAnswer_Click;
+            // 
+            // btnDot
+            // 
+            btnDot.Dock = DockStyle.Fill;
+            btnDot.Location = new Point(128, 324);
+            btnDot.Margin = new Padding(0);
+            btnDot.Name = "btnDot";
+            btnDot.Size = new Size(64, 55);
+            btnDot.TabIndex = 17;
+            btnDot.Text = ",";
+            btnDot.UseVisualStyleBackColor = true;
+            btnDot.Click += btnDot_Click;
+            // 
+            // btnZero
+            // 
+            btnZero.Dock = DockStyle.Fill;
+            btnZero.Location = new Point(64, 324);
+            btnZero.Margin = new Padding(0);
+            btnZero.Name = "btnZero";
+            btnZero.Size = new Size(64, 55);
+            btnZero.TabIndex = 18;
+            btnZero.Text = "0";
+            btnZero.UseVisualStyleBackColor = true;
+            btnZero.Click += btnZero_Click;
+            // 
+            // btnChangeSign
+            // 
+            btnChangeSign.Dock = DockStyle.Fill;
+            btnChangeSign.Location = new Point(0, 324);
+            btnChangeSign.Margin = new Padding(0);
+            btnChangeSign.Name = "btnChangeSign";
+            btnChangeSign.Size = new Size(64, 55);
+            btnChangeSign.TabIndex = 19;
+            btnChangeSign.Text = "+/-";
+            btnChangeSign.UseVisualStyleBackColor = true;
+            btnChangeSign.Click += btnChangeSign_Click;
             // 
             // tabControl1
             // 
@@ -603,6 +565,9 @@ namespace Calculator
             // panel1
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel1.AutoScroll = true;
+            panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            panel1.BackColor = Color.Transparent;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(399, 388);
@@ -621,6 +586,9 @@ namespace Calculator
             // 
             // tpMemoryPage
             // 
+            tpMemoryPage.Controls.Add(btnMemoryClear);
+            tpMemoryPage.Controls.Add(btnMemorySave);
+            tpMemoryPage.Controls.Add(panel2);
             tpMemoryPage.Location = new Point(4, 24);
             tpMemoryPage.Name = "tpMemoryPage";
             tpMemoryPage.Padding = new Padding(3);
@@ -628,6 +596,26 @@ namespace Calculator
             tpMemoryPage.TabIndex = 1;
             tpMemoryPage.Text = "Memory";
             tpMemoryPage.UseVisualStyleBackColor = true;
+            // 
+            // btnMemoryClear
+            // 
+            btnMemoryClear.Dock = DockStyle.Right;
+            btnMemoryClear.Location = new Point(329, 376);
+            btnMemoryClear.Name = "btnMemoryClear";
+            btnMemoryClear.Size = new Size(67, 54);
+            btnMemoryClear.TabIndex = 1;
+            btnMemoryClear.Text = "MC";
+            btnMemoryClear.UseVisualStyleBackColor = true;
+            btnMemoryClear.Click += btnMemoryClear_Click;
+            // 
+            // panel2
+            // 
+            panel2.AutoScroll = true;
+            panel2.Dock = DockStyle.Top;
+            panel2.Location = new Point(3, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(393, 373);
+            panel2.TabIndex = 0;
             // 
             // CalculatorForm
             // 
@@ -638,7 +626,6 @@ namespace Calculator
             MinimumSize = new Size(300, 300);
             Name = "CalculatorForm";
             Text = "Калькулятор";
-            Load += CalculatorForm_Load;
             Resize += CalculatorForm_Resize;
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
@@ -654,12 +641,11 @@ namespace Calculator
             tableLayoutPanel1.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
             tpHistoryPage.ResumeLayout(false);
+            tpMemoryPage.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Button btnAnswer;
         private Button btnSubstraction;
         private Button btnAddition;
         private Button btnDivision;
@@ -676,9 +662,6 @@ namespace Calculator
         private Button btnThree;
         private Button btnTwo;
         private Button btnOne;
-        private Button btnDot;
-        private Button btnZero;
-        private Button btnChangeSign;
         private Label lblLastNumber;
         private TextBox lblCurrentNumber;
         private Button btnSqrt;
@@ -686,10 +669,7 @@ namespace Calculator
         private Button btnReverseX;
         private Button btnPercent;
         private Label lblMemoryNumber;
-        private Button btnMemoryPlus;
-        private Button btnMemoryMinus;
         private Button btnMemorySave;
-        private Button btnMemoryClear;
         private SplitContainer splitContainer1;
         private SplitContainer splitContainer2;
         private TableLayoutPanel tableLayoutPanel1;
@@ -702,5 +682,11 @@ namespace Calculator
         private TabPage tpMemoryPage;
         private Button btn_ClearHistory;
         private Panel panel1;
+        private Panel panel2;
+        private Button btnMemoryClear;
+        private Button btnAnswer;
+        private Button btnDot;
+        private Button btnZero;
+        private Button btnChangeSign;
     }
 }

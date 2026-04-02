@@ -4,14 +4,13 @@ using System.Text;
 
 namespace WinFormsCalculator
 {
-    public static class ControlExtentions
+    public static class ControlExtensions
     {
-        public static Control? GetLastControl(this Panel control)
+        public static Control? GetLastControl(this Control control)
         {
             if (control.Controls.Count == 0)
                 return null;
             return control.Controls[control.Controls.Count - 1];
         }
     }
-
 }
