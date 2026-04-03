@@ -233,6 +233,7 @@ namespace Calculator
             }
             btnMemoryClear.Size = btnZero.Size;
             btnMemorySave.Size = btnZero.Size;
+            btn_ClearHistory.Size = btnZero.Size;
         }
 
         private void показатьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -260,6 +261,16 @@ namespace Calculator
         private void btnMemoryClear_Click(object sender, EventArgs e)
         {
             _memoryService.MemoryClear();
+        }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
