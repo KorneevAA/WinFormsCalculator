@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices.Swift;
-using System.Text;
-
-namespace WinFormsCalculator
+﻿namespace WinFormsCalculator
 {
-    
-    internal class HistoryItem
+    public class HistoryItem
     {
         public string CurrentValue { get; set; }
         public OperationType OperationType { get; set; }
@@ -20,12 +13,12 @@ namespace WinFormsCalculator
             OperationType = operationType;
             Result = result.ToString();
         }
-        public void AddToHistroy(Panel panel)
+        public GroupBox GetGroupBox(int panelSize)
         {
             var groupBox = new GroupBox()
             {
-                Size = new Size(panel.ClientSize.Width, 50),
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Right,
+                Size = new Size(panelSize, 50),
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Right
             };
             var operationSymbol = OperationFactory.GetOperationSymbol(OperationType);
             var lblEx1 = new Label()
@@ -36,14 +29,25 @@ namespace WinFormsCalculator
                 TextAlign = ContentAlignment.MiddleRight,
             };
             groupBox.Controls.Add(lblEx1);
-            var lastControl = panel.GetLastControl();
-            if (lastControl == null)
+            groupBox.MouseEnter += (_, __) =>
             {
-                panel.Controls.Add(groupBox);
-                return;
-            }
-            groupBox.Location = new Point(groupBox.Location.X, lastControl.Location.Y + lastControl.Height);
-            panel.Controls.Add(groupBox);
+                groupBox.BackColor = Color.LightGray;
+            };
+            groupBox.MouseLeave += (_, __) =>
+            {
+                if (!groupBox.ClientRectangle.Contains(groupBox.PointToClient(Cursor.Position)))
+                {
+                    groupBox.BackColor = Color.Transparent;
+                }
+            };
+            lblEx1.MouseLeave += (_, __) =>
+            {
+                if (!groupBox.ClientRectangle.Contains(groupBox.PointToClient(Cursor.Position)))
+                {
+                    groupBox.BackColor = Color.Transparent;
+                }
+            };
+            return groupBox;
         }
     }
 }

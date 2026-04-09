@@ -11,12 +11,14 @@
             _memoryValue = value;
             Guid = Guid.NewGuid();
         }
-        public GroupBox GetGroupBox(int panelSize)
+        public Panel GetGroupBox(int panelSize)
         {
-            var groupBox = new GroupBox()
+            var groupBox = new Panel()
             {
                 Size = new Size(panelSize, 60),
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(3, 3, 3, 3)
             };
 
             var valueLabel = new Label()

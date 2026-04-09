@@ -1,13 +1,12 @@
-﻿using System.Linq;
-
-namespace WinFormsCalculator
+﻿namespace WinFormsCalculator
 {
     public class MemoryService
     {
         private Panel _memoryPanel;
         private List<MemoryItem> _memoryItems = new List<MemoryItem>();
         private Label _noMemoryLabel;
-        public MemoryService(Panel memoryPanel)
+        private Button _memoryClear;
+        public MemoryService(Panel memoryPanel, Button memoryClear)
         {
             _memoryPanel = memoryPanel;
             _noMemoryLabel = new Label()
@@ -16,7 +15,9 @@ namespace WinFormsCalculator
                 Text = "Память пуста",
                 TextAlign = ContentAlignment.MiddleCenter
             };
-           _memoryPanel.Controls.Add(_noMemoryLabel);
+            _memoryPanel.Controls.Add(_noMemoryLabel);
+            _memoryClear = memoryClear;
+            _memoryClear.Enabled = false;
         }
 
         public void MemorySave(double value)
@@ -24,6 +25,7 @@ namespace WinFormsCalculator
             if (_memoryPanel.Controls.Contains(_noMemoryLabel))
             {
                 _memoryPanel.Controls.Remove(_noMemoryLabel);
+                _memoryClear.Enabled = true;
             }
             MemoryItem memoryItem = new MemoryItem(value);
             var lastControl = _memoryPanel.GetLastControl();
@@ -35,7 +37,7 @@ namespace WinFormsCalculator
                 _memoryItems.Add(memoryItem);
                 return;
             }
-            groupBox.Location = new Point(groupBox.Location.X, lastControl.Location.Y + lastControl.Height);
+            groupBox.Location = new Point(groupBox.Location.X, lastControl.Location.Y + lastControl.Height + 3);
             memoryItem.RequestDelete += OnMemoryItemDeleteRequest;
             _memoryPanel.Controls.Add(groupBox);
             _memoryItems.Add(memoryItem);
@@ -56,6 +58,7 @@ namespace WinFormsCalculator
             {
                 _memoryPanel.Controls.Add(_noMemoryLabel);
                 _noMemoryLabel.Dock = DockStyle.Fill;
+                _memoryClear.Enabled = false;
             }
         }
         public void MemoryClear()
@@ -63,6 +66,7 @@ namespace WinFormsCalculator
             _memoryItems.Clear();
             _memoryPanel.Controls.Clear();
             _memoryPanel.Controls.Add(_noMemoryLabel);
+            _memoryClear.Enabled = false;
         }
         private void RefreshMemoryItemsPosition()
         {
@@ -70,11 +74,8 @@ namespace WinFormsCalculator
 
             foreach (Control control in _memoryPanel.Controls)
             {
-                if (control is GroupBox)
-                {
-                    control.Location = new Point(control.Location.X, currentY);
-                    currentY += control.Height;
-                }
+                control.Location = new Point(control.Location.X, currentY);
+                currentY += control.Height + 3;
             }
 
             _memoryPanel.Refresh();

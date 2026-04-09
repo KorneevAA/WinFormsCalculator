@@ -67,10 +67,10 @@ namespace Calculator
             panel1 = new Panel();
             btn_ClearHistory = new Button();
             tpMemoryPage = new TabPage();
-            btnMemoryClear = new Button();
-            panel2 = new Panel();
             tableLayoutPanel4 = new TableLayoutPanel();
             tableLayoutPanel5 = new TableLayoutPanel();
+            btnMemoryClear = new Button();
+            panel2 = new Panel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -533,7 +533,6 @@ namespace Calculator
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 15.78947F));
             tableLayoutPanel3.Size = new Size(393, 427);
             tableLayoutPanel3.TabIndex = 2;
-            tableLayoutPanel3.Paint += tableLayoutPanel3_Paint;
             // 
             // panel1
             // 
@@ -568,6 +567,36 @@ namespace Calculator
             tpMemoryPage.Text = "Memory";
             tpMemoryPage.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel4
+            // 
+            tableLayoutPanel4.ColumnCount = 1;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 0, 1);
+            tableLayoutPanel4.Controls.Add(panel2, 0, 0);
+            tableLayoutPanel4.Dock = DockStyle.Fill;
+            tableLayoutPanel4.Location = new Point(3, 3);
+            tableLayoutPanel4.Name = "tableLayoutPanel4";
+            tableLayoutPanel4.RowCount = 2;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+            tableLayoutPanel4.Size = new Size(393, 427);
+            tableLayoutPanel4.TabIndex = 0;
+            // 
+            // tableLayoutPanel5
+            // 
+            tableLayoutPanel5.ColumnCount = 2;
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel5.Controls.Add(btnMemoryClear, 1, 0);
+            tableLayoutPanel5.Controls.Add(btnMemorySave, 0, 0);
+            tableLayoutPanel5.Dock = DockStyle.Fill;
+            tableLayoutPanel5.Location = new Point(3, 365);
+            tableLayoutPanel5.Name = "tableLayoutPanel5";
+            tableLayoutPanel5.RowCount = 1;
+            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel5.Size = new Size(387, 59);
+            tableLayoutPanel5.TabIndex = 0;
+            // 
             // btnMemoryClear
             // 
             btnMemoryClear.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -588,37 +617,6 @@ namespace Calculator
             panel2.Name = "panel2";
             panel2.Size = new Size(387, 356);
             panel2.TabIndex = 0;
-            // 
-            // tableLayoutPanel4
-            // 
-            tableLayoutPanel4.ColumnCount = 1;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.Controls.Add(tableLayoutPanel5, 0, 1);
-            tableLayoutPanel4.Controls.Add(panel2, 0, 0);
-            tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(3, 3);
-            tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 2;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-            tableLayoutPanel4.Size = new Size(393, 427);
-            tableLayoutPanel4.TabIndex = 0;
-            tableLayoutPanel4.Paint += tableLayoutPanel4_Paint;
-            // 
-            // tableLayoutPanel5
-            // 
-            tableLayoutPanel5.ColumnCount = 2;
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Controls.Add(btnMemoryClear, 1, 0);
-            tableLayoutPanel5.Controls.Add(btnMemorySave, 0, 0);
-            tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(3, 365);
-            tableLayoutPanel5.Name = "tableLayoutPanel5";
-            tableLayoutPanel5.RowCount = 1;
-            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(387, 59);
-            tableLayoutPanel5.TabIndex = 0;
             // 
             // CalculatorForm
             // 

@@ -6,10 +6,11 @@ namespace Calculator
 {
     public partial class CalculatorForm : Form
     {
-        private readonly CalculatorController _controller = new CalculatorController();
-        private readonly IInputProcessor _inputProcessor = new InputProcessor();
-        private readonly DisplayFormatter _formatter = new DisplayFormatter();
-        private readonly MemoryService _memoryService;
+        private CalculatorController _controller = new CalculatorController();
+        private IInputProcessor _inputProcessor = new InputProcessor();
+        private DisplayFormatter _formatter = new DisplayFormatter();
+        private MemoryService _memoryService;
+        private HistoryService _historyService;
 
         private bool _isHistoryCollapsed = false;
         private bool _isNewInput = true;
@@ -19,7 +20,8 @@ namespace Calculator
         public CalculatorForm()
         {
             InitializeComponent();
-            _memoryService = new MemoryService(panel2);
+            _memoryService = new MemoryService(panel2, btnMemoryClear);
+            _historyService = new HistoryService(panel1, btn_ClearHistory);
             lblCurrentNumber.TextChanged += LblCurrentNumber_TextChanged;
         }
 
@@ -94,8 +96,7 @@ namespace Calculator
                 if (CalculatorModel.CurrentOperation != OperationType.None)
                 {
                     double result = _controller.Calculate(CalculatorModel.LastValue, CalculatorModel.CurrentValue, CalculatorModel.CurrentOperation);
-                    HistoryItem historyItem = new HistoryItem(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
-                    historyItem.AddToHistroy(panel1);
+                    _historyService.HistorySave(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
                     CalculatorModel.LastValue = result;
                     lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 }
@@ -121,8 +122,7 @@ namespace Calculator
                 if (CalculatorModel.CurrentOperation == OperationType.None)
                     return;
                 double result = _controller.Calculate(CalculatorModel.LastValue, CalculatorModel.CurrentValue, CalculatorModel.CurrentOperation);
-                HistoryItem historyItem = new HistoryItem(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
-                historyItem.AddToHistroy(panel1);
+                _historyService.HistorySave(CalculatorModel.LastValue, CalculatorModel.CurrentOperation, CalculatorModel.CurrentValue, result);
                 lblCurrentNumber.Text = _formatter.FormatNumber(result);
                 lblLastNumber.Text = "";
                 CalculatorModel.CurrentOperation = OperationType.None;
@@ -250,7 +250,7 @@ namespace Calculator
 
         private void btn_ClearHistory_Click(object sender, EventArgs e)
         {
-            panel1.Controls.Clear();
+            _historyService.HistoryClear();
         }
 
         private void btnMemorySave_Click(object sender, EventArgs e)
@@ -261,16 +261,6 @@ namespace Calculator
         private void btnMemoryClear_Click(object sender, EventArgs e)
         {
             _memoryService.MemoryClear();
-        }
-
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }
